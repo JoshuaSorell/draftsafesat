@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Pyodide Example</title>
+    
+
+</head>
+<body>
+    <h1>Pyodide Example</h1>
+    
+    <textarea id="python-code" rows="4" cols="50" placeholder="Enter Python code here"></textarea>
+    <br>
+    <button id="run-button">Run Python Code</button>
+    
+    <h2>Python Output</h2>
+    <pre id="output"></pre>
+    <script type="text/javascript" src="https://pyodide-cdn2.iodide.io/v0.17.0/full/pyodide.js"></script>
+
+    <script type="text/javascript">
+        // Load Pyodide
+        languagePluginLoader.then(() => {
+            return pyodide.loadPackage(['numpy']);
+        }).then(() => {
+            // Function to run Python code
+            function runPythonCode() {
+                const pythonCode = document.getElementById("python-code").value;
+                const outputElement = document.getElementById("output");
+                
+                pyodide.runPythonAsync(pythonCode).then(output => {
+                    outputElement.textContent = output;
+                }).catch(error => {
+                    outputElement.textContent = `Error: ${error.message}`;
+                });
+            }
+            
+            // Attach a click event handler to the "Run Python Code" button
+            document.getElementById("run-button").addEventListener("click", runPythonCode);
+        });
+    </script>
+</body>
+</html> 
